@@ -35,13 +35,17 @@ function createMemeCard(meme){
       <h6 class="card-subtitle text-muted">Support card subtitle</h6>
     </div>
     <img class="rounded mx-auto d-block" style="height: 70%; width: 70%; display: block;" src="${meme.url}" alt="Card image">
-    <div class="card-body">
-      <ul id="list-group-${meme.id}" data-id="${meme.id}">
+    <div class="card-body" id="caption-list">
+      <ul id="list-group-${meme.id}" data-id="${meme.id}" style="display:block">
       </ul>
+      <div class="form-group" style="display:none">
+        <label class="col-form-label" for="inputDefault">Add Caption</label>
+        <input type="text" class="form-control" placeholder="Caption" id="inputDefault">
+      </div>
     </div>
     <div class="card-body">
       <button type="button" class="btn btn-success next-meme">Next Meme</button>
-      <button type="button" class="btn btn-success">Add Caption</button>
+      <button type="button" class="btn btn-success add-caption">Add Caption</button>
     </div>
     <div class="card-footer text-muted">
       2 days ago
@@ -53,37 +57,6 @@ function createMemeCard(meme){
   memeCaptions(meme)
 
 }
-
-
-//Render one random meme
-// function renderMeme() {
-//   let output = ''
-//   let n = getRandomInt(memes.length)
-//   console.log('n', n);
-//   output +=
-//   `
-//   <div class="card mb-3" data-id="${memes[n].id}">
-//     <h3 class="card-header">${memes[n].title}</h3>
-//     <div class="card-body">
-//       <h6 class="card-subtitle text-muted">Support card subtitle</h6>
-//     </div>
-//     <img class="rounded mx-auto d-block" style="height: 70%; width: 70%; display: block;" src="${memes[n].url}" alt="Card image">
-//     <div class="card-body">
-//       <ul class="list-group" data-id="${memes[n].id}">
-//       </ul>
-//     </div>
-//     <div class="card-body">
-//       <button type="button" class="btn btn-success next-meme">Next Meme</button>
-//       <button type="button" class="btn btn-success">Add Caption</button>
-//     </div>
-//     <div class="card-footer text-muted">
-//       2 days ago
-//     </div>
-//   </div>
-//   `
-//   container.innerHTML = output
-//   memeCaptions(memes[n])
-// }
 
 //Render caption for meme
 function memeCaptions(meme) {
@@ -123,6 +96,15 @@ function memeActions(e) {
     let likeBar = e.target
     likes = parseInt(likeBar.innerText++)
     updateLikes(captionId, likes, memeId)
+  } else if (e.target.className === 'btn btn-success add-caption') {
+
+    //Grab caption list and set display to none
+    const captionList = e.target.parentElement.parentElement.querySelector('#caption-list')
+    captionList.firstElementChild.style.display = "none"
+
+    //Grab caption form and set display to block
+    const captionForm = e.target.parentElement.parentElement.querySelector('.form-group')
+    captionForm.style.display = "block"
   }
 }
 
