@@ -36,12 +36,10 @@ function renderMeme() {
   <div class="card mb-3" data-id="${memes[n].id}">
     <h3 class="card-header">${memes[n].title}</h3>
     <div class="card-body">
-      <h5 class="card-title">Special title treatment</h5>
       <h6 class="card-subtitle text-muted">Support card subtitle</h6>
     </div>
-    <img style="height: 70%; width: 70%; display: block;" src="${memes[n].url}" alt="Card image">
+    <img class="rounded mx-auto d-block" style="height: 70%; width: 70%; display: block;" src="${memes[n].url}" alt="Card image">
     <div class="card-body">
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
       <ul class="list-group" data-id="${memes[n].id}">
       </ul>
     </div>
@@ -71,7 +69,7 @@ function memeCaptions(meme) {
 
     span.className = "badge badge-primary badge-pill"
     span.dataset.id = `${caption.id}`
-    span.innerHTML = `${caption.likes} likes`
+    span.innerHTML = caption.likes
 
     li.appendChild(span)
 
@@ -89,28 +87,31 @@ function getRandomInt(max) {
 function memeActions(e) {
   e.preventDefault()
   if (e.target.className === 'btn btn-success next-meme') {
-    console.log('e.target', e.target);
     renderMeme()
-  }else if(e.target.className === 'badge badge-primary badge-pill'){
-    let captionLikes = parseInt(e.target.innerText)
-    let newCaptionLikes = captionLikes += 1
-    const captionId = parseInt(e.target.dataset.id)
-    updateLikes(captionId, newCaptionLikes)
+  } else if (e.target.className === 'badge badge-primary badge-pill') {
+    // const captionId = parseInt(e.target.dataset.id)
+    // const memeId = parseInt(e.target.parentElement.parentElement.dataset.id)
+    // updateLikes(captionId,newLikes,memeId)
+    // debugger
+    let likeBar = e.target
+    likes = parseInt(likeBar.innerText++)
   }
 }
 
 getMemes()
 
-
-function updateLikes(id, likes){
-  fetch(`http://localhost:3000/captions/${id}`, {
-    method: 'PATCH',
-    headers: {
-        "Content-Type": "application/json"
-      },
-    body: JSON.stringify({likes: likes})
-  })
-  .then(res => res.json())
-  .then(function(){}
-  })
-}
+// function updateLikes(id, likes, memeId){
+//   fetch(`http://localhost:3000/captions/${id}`, {
+//     method: 'PATCH',
+//     headers: {
+//         "Content-Type": "application/json"
+//       },
+//     body: JSON.stringify({likes: likes})
+//   })
+//   .then(res => res.json())
+//   .then((data) => {
+//     let captionContainer = document.querySelector('.list-group')
+//     // let likes = captionContainer.getElementById(`${id}`)
+//     let likes = captionContainer.querySelectorAll(`[data-id~="${id}"]`)[0]
+//   })
+// }
