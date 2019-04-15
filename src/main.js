@@ -10,7 +10,7 @@ const memes = []
 //Event listeners
 
 //Click on next meme
-container.addEventListener('click', nextMeme);
+container.addEventListener('click', memeActions);
 
 
 //Get memes
@@ -42,13 +42,12 @@ function renderMeme() {
     <img style="height: 70%; width: 70%; display: block;" src="${memes[n].url}" alt="Card image">
     <div class="card-body">
       <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <ul class="list-group">
+      <ul class="list-group" data-id="${memes[n].id}">
       </ul>
     </div>
     <div class="card-body">
       <button type="button" class="btn btn-success next-meme">Next Meme</button>
       <button type="button" class="btn btn-success">Add Caption</button>
-      <button type="button" class="btn btn-success">Like</button>
     </div>
     <div class="card-footer text-muted">
       2 days ago
@@ -71,7 +70,8 @@ function memeCaptions(meme) {
     li.innerHTML = caption.text
 
     span.className = "badge badge-primary badge-pill"
-    span.innerHTML = caption.likes
+    span.dataset.id = `${caption.id}`
+    span.innerHTML = `${caption.likes} likes`
 
     li.appendChild(span)
 
@@ -86,12 +86,31 @@ function getRandomInt(max) {
 }
 
 //Render next meme
-function nextMeme(e) {
+function memeActions(e) {
   e.preventDefault()
   if (e.target.className === 'btn btn-success next-meme') {
     console.log('e.target', e.target);
     renderMeme()
+  }else if(e.target.className === 'badge badge-primary badge-pill'){
+    let captionLikes = parseInt(e.target.innerText)
+    let newCaptionLikes = captionLikes += 1
+    const captionId = parseInt(e.target.dataset.id)
+    updateLikes(captionId, newCaptionLikes)
   }
 }
 
 getMemes()
+
+
+function updateLikes(id, likes){
+  fetch(`http://localhost:3000/captions/${id}`, {
+    method: 'PATCH',
+    headers: {
+        "Content-Type": "application/json"
+      },
+    body: JSON.stringify({likes: likes})
+  })
+  .then(res => res.json())
+  .then(function(){}
+  })
+}
