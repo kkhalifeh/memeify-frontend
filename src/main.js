@@ -89,29 +89,29 @@ function memeActions(e) {
   if (e.target.className === 'btn btn-success next-meme') {
     renderMeme()
   } else if (e.target.className === 'badge badge-primary badge-pill') {
-    // const captionId = parseInt(e.target.dataset.id)
-    // const memeId = parseInt(e.target.parentElement.parentElement.dataset.id)
+    const captionId = parseInt(e.target.dataset.id)
+    const memeId = parseInt(e.target.parentElement.parentElement.dataset.id)
     // updateLikes(captionId,newLikes,memeId)
     // debugger
     let likeBar = e.target
     likes = parseInt(likeBar.innerText++)
+    updateLikes(captionId, likes, memeId)
   }
 }
 
 getMemes()
 
-// function updateLikes(id, likes, memeId){
-//   fetch(`http://localhost:3000/captions/${id}`, {
-//     method: 'PATCH',
-//     headers: {
-//         "Content-Type": "application/json"
-//       },
-//     body: JSON.stringify({likes: likes})
-//   })
-//   .then(res => res.json())
-//   .then((data) => {
-//     let captionContainer = document.querySelector('.list-group')
-//     // let likes = captionContainer.getElementById(`${id}`)
-//     let likes = captionContainer.querySelectorAll(`[data-id~="${id}"]`)[0]
-//   })
-// }
+function updateLikes(id, likes, memeId){
+  fetch(`http://localhost:3000/captions/${id}`, {
+    method: 'PATCH',
+    headers: {
+        "Content-Type": "application/json"
+      },
+    body: JSON.stringify({likes: likes})
+  })
+  .then(res => res.json())
+  .then(function(){
+    const findCaption = memes.find((meme) => {return meme.id === memeId})
+    console.log(findMeme)
+  })
+}
