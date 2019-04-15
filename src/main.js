@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('Content Loaded');;
 });
 
+getMemes()
+
 //Get elements
 const container = document.querySelector('.container')
 const memeCard = document.querySelector('.card')
@@ -18,49 +20,72 @@ function getMemes(){
   fetch('http://localhost:3000/memes')
   .then(resp => resp.json())
   .then((data) => {
+    let output = ''
     data.forEach((meme) => {
+      output +=
+      `
+      <div class="card mb-3" data-id="${meme.id}">
+        <h3 class="card-header">${meme.title}</h3>
+        <div class="card-body">
+          <h6 class="card-subtitle text-muted">Support card subtitle</h6>
+        </div>
+        <img class="rounded mx-auto d-block" style="height: 70%; width: 70%; display: block;" src="${meme.url}" alt="Card image">
+        <div class="card-body">
+          <ul class="list-group" data-id="${meme.id}">
+          </ul>
+        </div>
+        <div class="card-body">
+          <button type="button" class="btn btn-success next-meme">Next Meme</button>
+          <button type="button" class="btn btn-success">Add Caption</button>
+        </div>
+        <div class="card-footer text-muted">
+          2 days ago
+        </div>
+      </div>
+      `
+
       memes.push(meme)
+      memeCaptions(meme)
     })
-    renderMeme()
+
+    container.innerHTML = output
   })
 }
 
 
 //Render one random meme
-function renderMeme() {
-  let output = ''
-  let n = getRandomInt(memes.length)
-  console.log('n', n);
-  output +=
-  `
-  <div class="card mb-3" data-id="${memes[n].id}">
-    <h3 class="card-header">${memes[n].title}</h3>
-    <div class="card-body">
-      <h6 class="card-subtitle text-muted">Support card subtitle</h6>
-    </div>
-    <img class="rounded mx-auto d-block" style="height: 70%; width: 70%; display: block;" src="${memes[n].url}" alt="Card image">
-    <div class="card-body">
-      <ul class="list-group" data-id="${memes[n].id}">
-      </ul>
-    </div>
-    <div class="card-body">
-      <button type="button" class="btn btn-success next-meme">Next Meme</button>
-      <button type="button" class="btn btn-success">Add Caption</button>
-    </div>
-    <div class="card-footer text-muted">
-      2 days ago
-    </div>
-  </div>
-  `
-  container.innerHTML = output
-  memeCaptions(memes[n])
-}
+// function renderMeme() {
+//   let output = ''
+//   let n = getRandomInt(memes.length)
+//   console.log('n', n);
+//   output +=
+//   `
+//   <div class="card mb-3" data-id="${memes[n].id}">
+//     <h3 class="card-header">${memes[n].title}</h3>
+//     <div class="card-body">
+//       <h6 class="card-subtitle text-muted">Support card subtitle</h6>
+//     </div>
+//     <img class="rounded mx-auto d-block" style="height: 70%; width: 70%; display: block;" src="${memes[n].url}" alt="Card image">
+//     <div class="card-body">
+//       <ul class="list-group" data-id="${memes[n].id}">
+//       </ul>
+//     </div>
+//     <div class="card-body">
+//       <button type="button" class="btn btn-success next-meme">Next Meme</button>
+//       <button type="button" class="btn btn-success">Add Caption</button>
+//     </div>
+//     <div class="card-footer text-muted">
+//       2 days ago
+//     </div>
+//   </div>
+//   `
+//   container.innerHTML = output
+//   memeCaptions(memes[n])
+// }
 
 //Render caption for meme
 function memeCaptions(meme) {
   const listGroup = document.querySelector('.list-group')
-  console.log(listGroup.innerHTML);
-  // debugger
   meme.captions.forEach((caption) => {
     const li = document.createElement('li')
     const span = document.createElement('span')
@@ -99,7 +124,7 @@ function memeActions(e) {
   }
 }
 
-getMemes()
+
 
 function updateLikes(id, likes, memeId){
   fetch(`http://localhost:3000/captions/${id}`, {
@@ -110,8 +135,10 @@ function updateLikes(id, likes, memeId){
     body: JSON.stringify({likes: likes})
   })
   .then(res => res.json())
-  .then(function(){
-    const findCaption = memes.find((meme) => {return meme.id === memeId})
-    console.log(findMeme)
+  .then((data) => {
+    const foundCaption = memes.find((meme) => {
+      meme.captions.find((caption) => {return caption.id === id})
+    })
+    console.log('foundCaption', foundCaption);
   })
 }
