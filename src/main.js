@@ -20,36 +20,38 @@ function getMemes(){
   fetch('http://localhost:3000/memes')
   .then(resp => resp.json())
   .then((data) => {
-    let output = ''
     data.forEach((meme) => {
-      output +=
-      `
-      <div class="card mb-3" data-id="${meme.id}">
-        <h3 class="card-header">${meme.title}</h3>
-        <div class="card-body">
-          <h6 class="card-subtitle text-muted">Support card subtitle</h6>
-        </div>
-        <img class="rounded mx-auto d-block" style="height: 70%; width: 70%; display: block;" src="${meme.url}" alt="Card image">
-        <div class="card-body">
-          <ul class="list-group" data-id="${meme.id}">
-          </ul>
-        </div>
-        <div class="card-body">
-          <button type="button" class="btn btn-success next-meme">Next Meme</button>
-          <button type="button" class="btn btn-success">Add Caption</button>
-        </div>
-        <div class="card-footer text-muted">
-          2 days ago
-        </div>
-      </div>
-      `
-
-      memes.push(meme)
-      memeCaptions(meme)
+      createMemeCard(meme)
     })
-
-    container.innerHTML = output
   })
+}
+
+function createMemeCard(meme){
+  container.innerHTML +=
+  `
+  <div class="card mb-3" data-id="${meme.id}">
+    <h3 class="card-header">${meme.title}</h3>
+    <div class="card-body">
+      <h6 class="card-subtitle text-muted">Support card subtitle</h6>
+    </div>
+    <img class="rounded mx-auto d-block" style="height: 70%; width: 70%; display: block;" src="${meme.url}" alt="Card image">
+    <div class="card-body">
+      <ul id="list-group-${meme.id}" data-id="${meme.id}">
+      </ul>
+    </div>
+    <div class="card-body">
+      <button type="button" class="btn btn-success next-meme">Next Meme</button>
+      <button type="button" class="btn btn-success">Add Caption</button>
+    </div>
+    <div class="card-footer text-muted">
+      2 days ago
+    </div>
+  </div>
+  `
+
+  memes.push(meme)
+  memeCaptions(meme)
+
 }
 
 
@@ -85,7 +87,7 @@ function getMemes(){
 
 //Render caption for meme
 function memeCaptions(meme) {
-  const listGroup = document.querySelector('.list-group')
+  const listGroup = document.querySelector(`#list-group-${meme.id}`)
   meme.captions.forEach((caption) => {
     const li = document.createElement('li')
     const span = document.createElement('span')
