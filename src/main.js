@@ -103,6 +103,7 @@ function memeCaptions(meme) {
 
     btn.className = 'btn btn-primary like-btn'
     btn.dataset.id = `${caption.id}`
+    btn.style = "white-space: nowrap"
     btn.innerHTML = `<i class="far fa-thumbs-up"></i> <span> ${caption.likes} </span>`
 
     li.appendChild(btn)
