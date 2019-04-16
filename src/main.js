@@ -8,6 +8,7 @@ getMemes()
 const container = document.querySelector('.container')
 const memeCard = document.querySelector('.card')
 const addMeme = document.querySelector('.add-meme')
+const logo = document.querySelector('.navbar-brand')
 const memes = []
 
 //Search input
@@ -17,6 +18,7 @@ const searchMeme = document.querySelector('#search-meme')
 //Click on next meme
 container.addEventListener('click', memeActions);
 addMeme.addEventListener('click', addNewMeme);
+logo.addEventListener('click', getMemes);
 
 //Search meme by key stroke
 searchMeme.addEventListener('keyup', (e) => {
@@ -132,8 +134,13 @@ function memeActions(e) {
     } else if (e.target.className === 'btn btn-primary'){
 
       const newCaption = e.target.parentElement.querySelector("#captionInput").value
-      const memeId = parseInt(e.target.parentElement.dataset.id)
-      createCaption(newCaption, memeId)
+      if (newCaption === '') {
+        const addCaptionForm = e.target.parentElement.querySelector("#captionInput")
+        showAlert('Field cannot be empty', 'alert alert-danger', addCaptionForm)
+      } else {
+        const memeId = parseInt(e.target.parentElement.dataset.id)
+        createCaption(newCaption, memeId)
+    }
 
   }
 }
@@ -165,6 +172,7 @@ function createCaption(caption, memeId){
   })
 }
 
+//Add Meme to database
 function createMeme(url, title, caption){
   fetch(`http://localhost:3000/memes`, {
     method: 'POST',
@@ -209,7 +217,13 @@ function addNewMeme(e) {
     const memeTitle = document.querySelector('#InputMeme').value
     const memeUrl = document.querySelector('#InputMemeURL').value
     const memeCaption = document.querySelector('#InputMemeCaption').value
-    createMeme(memeUrl, memeTitle, memeCaption)
+
+    if (memeTitle === '' || memeUrl === '' || memeCaption === '') {
+      memeField = document.querySelector('.submit-new-meme')
+      showAlert('Please fill in all fields', 'alert alert-danger', memeField)
+    } else {
+      createMeme(memeUrl, memeTitle, memeCaption)
+    }
   })
 }
 
@@ -265,3 +279,28 @@ var K = function () {
         ie: a.match(/MSIE\s([^;]*)/)
     }
 }();
+
+//Show alerts
+function showAlert(message, className, element) {
+  const div = document.createElement('div')
+  //Add class
+  div.className = className
+
+  //Add text
+  div.appendChild(document.createTextNode(message))
+
+  const formContainer = element.parentElement
+  //Insert the alert
+  formContainer.insertBefore(div,element)
+
+  //Timeout after specific time
+  setTimeout(() => {clearAlert()},2000)
+}
+
+//Clear alert message
+function clearAlert() {
+  const currentAlert = document.querySelector('.alert')
+  if (currentAlert) {
+    currentAlert.remove()
+  }
+}
