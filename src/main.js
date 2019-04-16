@@ -25,10 +25,9 @@ searchMeme.addEventListener('keyup', (e) => {
 
   if (userText !== '') {
     findMeme(userText)
+  } else {
+    getMemes()
   }
-
-
-
 
 });
 
