@@ -164,6 +164,20 @@ function createCaption(caption, memeId){
   })
 }
 
+function createMeme(url, title, caption){
+  fetch(`http://localhost:3000/memes`, {
+    method: 'POST',
+    headers: {
+        "Content-Type": "application/json"
+      },
+    body: JSON.stringify({url: url, title: title})
+  })
+  .then(res => res.json())
+  .then(function(newMeme){
+    getMemes()
+    createCaption(caption, newMeme.id)
+  })
+}
 
 //Add new meme from user
 function addNewMeme(e) {
@@ -185,9 +199,17 @@ function addNewMeme(e) {
     <label for="InputMemeCaption">Caption</label>
     <input type="text" class="form-control" id="InputMemeCaption" placeholder="Caption">
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" class="btn btn-primary submit-new-meme">Submit</button>
   `
   container.appendChild(form)
+  const submitMeme = document.querySelector('.submit-new-meme')
+  submitMeme.addEventListener('click', function(e){
+    e.preventDefault()
+    const memeTitle = document.querySelector('#InputMeme').value
+    const memeUrl = document.querySelector('#InputMemeURL').value
+    const memeCaption = document.querySelector('#InputMemeCaption').value
+    createMeme(memeUrl, memeTitle, memeCaption)
+  })
 }
 
 //Add like function, which renders the UI and sends data to the updateLikes function
