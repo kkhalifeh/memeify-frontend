@@ -9,6 +9,7 @@ const container = document.querySelector('.container')
 const memeCard = document.querySelector('.card')
 const addMeme = document.querySelector('.add-meme')
 const logo = document.querySelector('.navbar-brand')
+const navbar = document.querySelector('.navbar-toggler')
 const memes = []
 
 //Search input
@@ -19,6 +20,7 @@ const searchMeme = document.querySelector('#search-meme')
 container.addEventListener('click', memeActions);
 addMeme.addEventListener('click', addNewMeme);
 logo.addEventListener('click', getMemes);
+navbar.addEventListener('click', addNewMeme);
 
 //Search meme by key stroke
 searchMeme.addEventListener('keyup', (e) => {
@@ -197,6 +199,7 @@ function addNewMeme(e) {
   form.innerHTML =
   `
   <div class="form-group">
+    <h2> Add Meme </h2>
     <label for="InputMeme">Meme Title</label>
     <input type="text" class="form-control" id="InputMeme" placeholder="Enter Meme Title">
   </div>
