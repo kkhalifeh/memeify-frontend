@@ -63,7 +63,7 @@ function createMemeCard(meme){
     </div>
     <img class="rounded mx-auto d-block" style="height: 70%; width: 70%; display: block;" src="${meme.url}" alt="Card image">
     <div class="card-body" id="caption-list">
-      <ul id="list-group-${meme.id}" data-id="${meme.id}" style="display:block">
+      <ul id="list-group-${meme.id}" data-id="${meme.id}" style="display:block; padding-inline-start: 0px">
       </ul>
         <div class="form-group" style="display:none">
         <form data-id="${meme.id}">
