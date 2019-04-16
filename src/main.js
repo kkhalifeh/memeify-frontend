@@ -34,7 +34,6 @@ function createMemeCard(meme){
   <div class="card mb-3" data-id="${meme.id}">
     <h3 class="card-header">${meme.title}</h3>
     <div class="card-body">
-      <h6 class="card-subtitle text-muted">Support card subtitle</h6>
     </div>
     <img class="rounded mx-auto d-block" style="height: 70%; width: 70%; display: block;" src="${meme.url}" alt="Card image">
     <div class="card-body" id="caption-list">
@@ -49,7 +48,6 @@ function createMemeCard(meme){
         </div>
     </div>
     <div class="card-body">
-      <button type="button" class="btn btn-success next-meme">Next Meme</button>
       <button type="button" class="btn btn-success add-caption">Add Caption</button>
     </div>
     <div class="card-footer text-muted">
