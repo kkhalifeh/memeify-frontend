@@ -9,12 +9,21 @@ const container = document.querySelector('.container')
 const memeCard = document.querySelector('.card')
 const memes = []
 
-//Event listeners
+//Search input
+const searchMeme = document.querySelector('#search-meme')
 
+//Event listeners
 //Click on next meme
 container.addEventListener('click', memeActions);
 
+//Search meme by key stroke
+searchMeme.addEventListener('keyup', (e) => {
+  //Get input text
+  let userText = e.target.value
+  
+  findMeme(userText)
 
+});
 
 //Get memes
 function getMemes(){
@@ -28,6 +37,21 @@ function getMemes(){
   })
 }
 
+// Fetch meme by title
+function findMeme(title) {
+  fetch('http://localhost:3000/memes')
+  .then(resp => resp.json())
+  .then((data) => {
+    container.innerHTML = ''
+    data.forEach((meme) => {
+      if (meme.title.toLowerCase().includes(title.toLowerCase())) {
+        createMemeCard(meme)
+      }
+    })
+  })
+}
+
+//Create meme
 function createMemeCard(meme){
   container.innerHTML +=
   `
@@ -43,12 +67,13 @@ function createMemeCard(meme){
         <form data-id="${meme.id}">
           <label class="col-form-label" for="inputDefault">Add Caption</label>
           <input type="text" class="form-control" placeholder="Caption" id="captionInput">
+          <br>
           <button type="submit" class="btn btn-primary">Submit</button>
           </form>
         </div>
     </div>
     <div class="card-body">
-      <button type="button" class="btn btn-success add-caption">Add Caption</button>
+      <button type="button" class="btn btn-success btn-block add-caption">Add Caption</button>
     </div>
     <div class="card-footer text-muted">
       2 days ago
@@ -66,15 +91,22 @@ function memeCaptions(meme) {
   const listGroup = document.querySelector(`#list-group-${meme.id}`)
   meme.captions.forEach((caption) => {
     const li = document.createElement('li')
-    const span = document.createElement('span')
+    // const span = document.createElement('span')
+    const btn = document.createElement('button')
     li.className = "list-group-item d-flex justify-content-between align-items-center"
     li.innerHTML = caption.text
 
-    span.className = "badge badge-primary badge-pill"
-    span.dataset.id = `${caption.id}`
-    span.innerHTML = caption.likes
 
-    li.appendChild(span)
+    btn.className = 'btn btn-primary like-btn'
+    btn.dataset.id = `${caption.id}`
+    // span.className = "badge badge-primary badge-pill"
+    // span.dataset.id = `${caption.id}`
+    // span.innerHTML = caption.likes
+    btn.innerHTML = `<i class="far fa-thumbs-up"></i> <span> ${caption.likes} </span>`
+
+
+    // li.appendChild(span)
+    li.appendChild(btn)
 
     listGroup.appendChild(li)
   })
@@ -89,29 +121,34 @@ function getRandomInt(max) {
 //Render next meme
 function memeActions(e) {
   e.preventDefault()
-  if (e.target.className === 'btn btn-success next-meme') {
-    renderMeme()
-  } else if (e.target.className === 'badge badge-primary badge-pill') {
+  if (e.target.className === 'btn btn-primary like-btn') {
+    //Grab elements for like
     const captionId = parseInt(e.target.dataset.id)
     const memeId = parseInt(e.target.parentElement.parentElement.dataset.id)
-    // updateLikes(captionId,newLikes,memeId)
-    // debugger
+
     let likeBar = e.target
-    likes = parseInt(likeBar.innerText++)
+
+    //Add likes to element
+    likeBar.className = 'btn btn-secondary disabled like-btn'
+    likeBar.textContent = parseInt(likeBar.textContent) + 1
+    likes = parseInt(likeBar.innerText)
+
+    //Update likes function
     updateLikes(captionId, likes, memeId)
-  } else if (e.target.className === 'btn btn-success add-caption') {
+  } else if (e.target.className === 'btn btn-success btn-block add-caption') {
 
-    //Grab caption list and set display to none
-    const captionList = e.target.parentElement.parentElement.querySelector('#caption-list')
-    captionList.firstElementChild.style.display = "none"
+      //Grab caption list and set display to none
+      const captionList = e.target.parentElement.parentElement.querySelector('#caption-list')
+      captionList.firstElementChild.style.display = "none"
 
-    //Grab caption form and set display to block
-    const captionForm = e.target.parentElement.parentElement.querySelector('.form-group')
-    captionForm.style.display = "block"
-  }else if (e.target.className === 'btn btn-primary'){
-    const newCaption = e.target.parentElement.querySelector("#captionInput").value
-    const memeId = parseInt(e.target.parentElement.dataset.id)
-    createCaption(newCaption, memeId)
+      //Grab caption form and set display to block
+      const captionForm = e.target.parentElement.parentElement.querySelector('.form-group')
+      captionForm.style.display = "block"
+    } else if (e.target.className === 'btn btn-primary'){
+
+      const newCaption = e.target.parentElement.querySelector("#captionInput").value
+      const memeId = parseInt(e.target.parentElement.dataset.id)
+      createCaption(newCaption, memeId)
 
   }
 }
