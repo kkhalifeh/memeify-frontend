@@ -169,7 +169,25 @@ function createCaption(caption, memeId){
 function addNewMeme(e) {
   e.preventDefault()
   console.log('e.target', e.target);
-
+  container.innerHTML = ''
+  const form = document.createElement('form')
+  form.innerHTML =
+  `
+  <div class="form-group">
+    <label for="InputMeme">Meme Title</label>
+    <input type="text" class="form-control" id="InputMeme" placeholder="Enter Meme Title">
+  </div>
+  <div class="form-group">
+    <label for="InputMemeURL">URL</label>
+    <input type="text" class="form-control" id="InputMemeURL" placeholder="Enter Meme URL">
+  </div>
+  <div class="form-group">
+    <label for="InputMemeCaption">Caption</label>
+    <input type="text" class="form-control" id="InputMemeCaption" placeholder="Caption">
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+  `
+  container.appendChild(form)
 }
 
 //Add like function, which renders the UI and sends data to the updateLikes function
