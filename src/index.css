@@ -3,10 +3,10 @@
   text-align: center;
 }
 
-.top-left {
+.image-caption {
   position: absolute;
   top: 10%;
-  left: 20%;
+  left: 50%;
   transform: translate(-50%, -50%);
   color: white;
 }

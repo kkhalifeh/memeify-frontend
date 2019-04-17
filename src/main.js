@@ -71,7 +71,7 @@ function createMemeCard(meme){
     </div>
     <div class="img-container">
       <img class="rounded mx-auto d-block" style="height: 70%; width: 70%; display: block;" src="${meme.url}" alt="Card image">
-      <div class="top-left">Top Left</div>
+      <div class="image-caption" id="img-${meme.id}"></div>
     </div>
     <div class="card-body" id="caption-list">
       <ul id="list-group-${meme.id}" data-id="${meme.id}" style="display:block; padding-inline-start: 0px">
@@ -106,7 +106,7 @@ function memeCaptions(meme) {
 
     const btn = document.createElement('button')
     li.className = "list-group-item d-flex justify-content-between align-items-center"
-    li.innerHTML = caption.text
+    li.innerHTML = `<h6 class="img-text"> ${caption.text} </h6>`
 
     btn.className = 'btn btn-primary like-btn'
     btn.dataset.id = `${caption.id}`
@@ -150,6 +150,15 @@ function memeActions(e) {
   } else if (e.target.className === "list-group-item d-flex justify-content-between align-items-center"){
     const memeCard = e.target.parentElement.parentElement.parentElement
     memeCard.querySelector('img').innerText = e.target.innerHTML
+  } else if (e.target.className === 'img-text') {
+    console.log('here');
+    const memeId = e.target.parentElement.parentElement.dataset.id
+    const thisCaption = e.target.innerText
+    const imgCaption = document.getElementById(`img-${memeId}`)
+    // debugger
+
+    imgCaption.innerText = thisCaption
+
   }
 }
 
