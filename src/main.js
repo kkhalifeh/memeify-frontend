@@ -157,7 +157,7 @@ function memeActions(e) {
     const imgCaption = document.getElementById(`img-${memeId}`)
     // debugger
 
-    imgCaption.innerText = thisCaption
+    imgCaption.innerText = thisCaption.toUpperCase() 
 
   }
 }
