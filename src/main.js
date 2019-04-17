@@ -69,9 +69,10 @@ function createMemeCard(meme){
     <h3 class="card-header">${meme.title}</h3>
     <div class="card-body">
     </div>
-    <div class="img-container">
+    <div class="img-container"; >
       <img class="rounded mx-auto d-block" style="height: 70%; width: 70%; display: block;" src="${meme.url}" alt="Card image">
       <div class="image-caption" id="img-${meme.id}"></div>
+      <div class="share-meme"> Save Meme </div>
     </div>
     <div class="card-body" id="caption-list">
       <ul id="list-group-${meme.id}" data-id="${meme.id}" style="display:block; padding-inline-start: 0px">
@@ -159,8 +160,13 @@ function memeActions(e) {
 
     imgCaption.innerText = thisCaption.toUpperCase()
 
-  }else if (e.target.querySelector('img').src = "https://i.imgflip.com/1h7in3.jpg"){
-      e.target.querySelector('img').src = "https://media.giphy.com/media/d3mlE7uhX8KFgEmY/giphy.gif"
+  } else if (e.target.className === 'share-meme') {
+    let selectedMeme = e.target.parentElement
+
+    html2canvas(selectedMeme, {letterRendering: 1, allowTaint : true}).then(canvas => {
+        console.log('canvas', canvas);
+        shareMeme(canvas)
+    })
   }
 }
 
@@ -323,4 +329,15 @@ function clearAlert() {
   if (currentAlert) {
     currentAlert.remove()
   }
+}
+
+function shareMeme(img) {
+  container.innerHTML =
+  `
+  <div class="card mb-3">
+    <h3 class="card-header">Download Image</h3>
+  </div>
+  `
+  container.appendChild(img)
+  debugger
 }
