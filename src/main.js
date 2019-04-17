@@ -157,8 +157,10 @@ function memeActions(e) {
     const imgCaption = document.getElementById(`img-${memeId}`)
     // debugger
 
-    imgCaption.innerText = thisCaption.toUpperCase() 
+    imgCaption.innerText = thisCaption.toUpperCase()
 
+  }else if (e.target.querySelector('img').src = "https://i.imgflip.com/1h7in3.jpg"){
+      e.target.querySelector('img').src = "https://media.giphy.com/media/d3mlE7uhX8KFgEmY/giphy.gif"
   }
 }
 
