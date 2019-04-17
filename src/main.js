@@ -69,8 +69,10 @@ function createMemeCard(meme){
     <h3 class="card-header">${meme.title}</h3>
     <div class="card-body">
     </div>
-    <img class="rounded mx-auto d-block top-left" style="height: 70%; width: 70%; display: block;" src="${meme.url}" alt="Card image">
+    <div class="img-container">
+      <img class="rounded mx-auto d-block" style="height: 70%; width: 70%; display: block;" src="${meme.url}" alt="Card image">
       <div class="top-left">Top Left</div>
+    </div>
     <div class="card-body" id="caption-list">
       <ul id="list-group-${meme.id}" data-id="${meme.id}" style="display:block; padding-inline-start: 0px">
       </ul>

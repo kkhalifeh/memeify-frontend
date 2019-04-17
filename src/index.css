@@ -1,5 +1,12 @@
-.rounded.mx-auto.d-block .top-left {
+.img-container {
+  position: relative;
+  text-align: center;
+}
+
+.top-left {
   position: absolute;
-  top: 8px;
-  left: 16px;
+  top: 10%;
+  left: 20%;
+  transform: translate(-50%, -50%);
+  color: white;
 }
