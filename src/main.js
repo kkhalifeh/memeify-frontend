@@ -11,6 +11,7 @@ const addMeme = document.querySelector('.add-meme')
 const logo = document.querySelector('.navbar-brand')
 const navbar = document.querySelector('.navbar-toggler')
 const memes = []
+ gif = true
 
 //Search input
 const searchMeme = document.querySelector('#search-meme')
@@ -70,7 +71,7 @@ function createMemeCard(meme){
     <div class="card-body">
     </div>
     <div class="img-container">
-      <img class="rounded mx-auto d-block" style="height: 70%; width: 70%; display: block;" src="${meme.url}" alt="Card image">
+      <img id="still-image" class="rounded mx-auto d-block" style="height: 70%; width: 70%; display: block;" src="${gif ? meme.url : meme.gif_url}" alt="Card image">
       <div class="image-caption" id="img-${meme.id}"></div>
     </div>
     <div class="card-body" id="caption-list">
@@ -159,8 +160,9 @@ function memeActions(e) {
 
     imgCaption.innerText = thisCaption.toUpperCase()
 
-  }else if (e.target.querySelector('img').src = "https://i.imgflip.com/1h7in3.jpg"){
-      e.target.querySelector('img').src = "https://media.giphy.com/media/d3mlE7uhX8KFgEmY/giphy.gif"
+  }else if (e.target.querySelector('img')){
+      gif =! gif
+      getMemes()
   }
 }
 
@@ -192,13 +194,13 @@ function createCaption(caption, memeId){
 }
 
 //Add Meme to database
-function createMeme(url, title, caption){
+function createMeme(url, gif_url, title, caption){
   fetch(`http://localhost:3000/memes`, {
     method: 'POST',
     headers: {
         "Content-Type": "application/json"
       },
-    body: JSON.stringify({url: url, title: title})
+    body: JSON.stringify({url: url, gif_url: gif_url, title: title})
   })
   .then(res => res.json())
   .then(function(newMeme){
@@ -225,6 +227,10 @@ function addNewMeme(e) {
     <input type="text" class="form-control" id="InputMemeURL" placeholder="Enter Meme URL">
   </div>
   <div class="form-group">
+    <label for="InputGifURL">GIF URL</label>
+    <input type="text" class="form-control" id="InputGifURL" placeholder="Enter Gif URL">
+  </div>
+  <div class="form-group">
     <label for="InputMemeCaption">Caption</label>
     <input type="text" class="form-control" id="InputMemeCaption" placeholder="Caption">
   </div>
@@ -236,13 +242,14 @@ function addNewMeme(e) {
     e.preventDefault()
     const memeTitle = document.querySelector('#InputMeme').value
     const memeUrl = document.querySelector('#InputMemeURL').value
+    const gifUrl = document.querySelector('#InputGifURL').value
     const memeCaption = document.querySelector('#InputMemeCaption').value
 
     if (memeTitle === '' || memeUrl === '' || memeCaption === '') {
       memeField = document.querySelector('.submit-new-meme')
       showAlert('Please fill in all fields', 'alert alert-danger', memeField)
     } else {
-      createMeme(memeUrl, memeTitle, memeCaption)
+      createMeme(memeUrl, gifUrl, memeTitle, memeCaption)
     }
   })
 }
