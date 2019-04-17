@@ -69,7 +69,8 @@ function createMemeCard(meme){
     <h3 class="card-header">${meme.title}</h3>
     <div class="card-body">
     </div>
-    <img class="rounded mx-auto d-block" style="height: 70%; width: 70%; display: block;" src="${meme.url}" alt="Card image">
+    <img class="rounded mx-auto d-block top-left" style="height: 70%; width: 70%; display: block;" src="${meme.url}" alt="Card image">
+      <div class="top-left">Top Left</div>
     <div class="card-body" id="caption-list">
       <ul id="list-group-${meme.id}" data-id="${meme.id}" style="display:block; padding-inline-start: 0px">
       </ul>
@@ -144,6 +145,9 @@ function memeActions(e) {
         createCaption(newCaption, memeId)
     }
 
+  } else if (e.target.className === "list-group-item d-flex justify-content-between align-items-center"){
+    const memeCard = e.target.parentElement.parentElement.parentElement
+    memeCard.querySelector('img').innerText = e.target.innerHTML
   }
 }
 
