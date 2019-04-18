@@ -1,6 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('Content Loaded');;
-});
+
 
 getMemes()
 loadScript()
@@ -102,6 +100,7 @@ function createMemeCard(meme){
 
   memes.push(meme)
   memeCaptions(meme)
+  mostPopularCaptions(memes)
 }
 
 //Render caption for meme
@@ -352,7 +351,24 @@ function shareMeme(img) {
   </div>
   `
   container.appendChild(img)
-  debugger
+}
+
+function mostPopularCaptions(arr) {
+  const popularContainer = document.querySelector('.most-popular')
+  const topMemes = arr.slice(0,4)
+  let output = ''
+  topMemes.forEach((meme, index) => {
+    let topCaption = meme.captions[0]
+    let memeId = meme.id
+    output +=
+    `
+      <div class="img-container">
+        <img class="rounded" height="100%" width="100%" src="${meme.url}" alt="Card image">
+        <div class="image-caption-popular">${topCaption.text}</div>
+      </div>
+    `
+  })
+  popularContainer.innerHTML = output
 }
 
 function loadScript() {
