@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 getMemes()
+loadScript()
 
 //Get elements
 const container = document.querySelector('.container')
@@ -64,6 +65,7 @@ function findMeme(title) {
 
 //Create meme card
 function createMemeCard(meme){
+  loadScript()
   container.innerHTML +=
   `
   <div class="card mb-3" data-id="${meme.id}">
@@ -75,6 +77,7 @@ function createMemeCard(meme){
       <img id="still-image" class="rounded mx-auto d-block" style="height: 70%; width: 70%; display: block;" src="${gif ? meme.url : meme.gif_url}" alt="Card image">
       <div class="image-caption" id="img-${meme.id}"></div>
       <div class="share-meme"> Save Meme </div>
+        <a href="https://twitter.com/intent/tweet?text=My%20favorite%20Meme!!!%20${meme.url}" class="twitter-share-button" data-show-count="false">Tweet</a>
     </div>
     <div class="card-body" id="caption-list">
       <ul id="list-group-${meme.id}" data-id="${meme.id}" style="display:block; padding-inline-start: 0px">
@@ -350,4 +353,15 @@ function shareMeme(img) {
   `
   container.appendChild(img)
   debugger
+}
+
+function loadScript() {
+  document.querySelector('#twitter-script').remove()
+  const body = document.querySelector('body')
+  const script = document.createElement('script')
+  script.id = 'twitter-script'
+  script.src = "https://platform.twitter.com/widgets.js"
+  script.charset='utf-8'
+  script.async = true
+  body.appendChild(script)
 }
