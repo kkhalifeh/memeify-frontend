@@ -37,7 +37,7 @@ searchMeme.addEventListener('keyup', (e) => {
 
 //Get memes
 function getMemes(){
-  fetch('http://localhost:3000/memes')
+  fetch('https://memeify-bknd.herokuapp.com/memes')
   .then(resp => resp.json())
   .then((data) => {
     container.innerHTML = ""
@@ -49,7 +49,7 @@ function getMemes(){
 
 // Fetch meme by title
 function findMeme(title) {
-  fetch('http://localhost:3000/memes')
+  fetch('https://memeify-bknd.herokuapp.com/memes')
   .then(resp => resp.json())
   .then((data) => {
     container.innerHTML = ''
@@ -179,7 +179,7 @@ function memeActions(e) {
 
 //Update likes in the database
 function updateLikes(id, likes, memeId){
-  fetch(`http://localhost:3000/captions/${id}`, {
+  fetch(`https://memeify-bknd.herokuapp.com/captions/${id}`, {
     method: 'PATCH',
     headers: {
         "Content-Type": "application/json"
@@ -191,7 +191,7 @@ function updateLikes(id, likes, memeId){
 
 //Create a new caption, POST to database
 function createCaption(caption, memeId){
-  fetch(`http://localhost:3000/captions`, {
+  fetch(`https://memeify-bknd.herokuapp.com/captions`, {
     method: 'POST',
     headers: {
         "Content-Type": "application/json"
@@ -206,7 +206,7 @@ function createCaption(caption, memeId){
 
 //Add Meme to database
 function createMeme(url, gif_url, title, caption){
-  fetch(`http://localhost:3000/memes`, {
+  fetch(`https://memeify-bknd.herokuapp.com/memes`, {
     method: 'POST',
     headers: {
         "Content-Type": "application/json"
